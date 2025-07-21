@@ -1,0 +1,19 @@
+# Member Service 설정
+server:
+  port: 8081  # Member Service의 전용 포트
+
+spring:
+  application:
+    name: member-service  # Eureka에 등록될 서비스 이름 (다른 서비스들이 이 이름으로 호출)
+
+# MSA 핵심: 서비스 디스커버리 설정
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server에 자신을 등록하고 다른 서비스 정보를 가져옴
+
+# 참고: MSA에서 각 서비스는 다음과 같이 동작합니다:
+# 1. 서비스 시작 시 Eureka Server에 자신의 정보(IP, 포트, 상태) 등록
+# 2. 주기적으로 Eureka Server에 하트비트 전송으로 생존 신호
+# 3. 다른 서비스 호출 시 Eureka에서 대상 서비스의 위치 정보 조회
+# 4. 서비스 종료 시 Eureka Server에서 자동 제거

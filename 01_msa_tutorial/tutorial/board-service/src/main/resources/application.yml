@@ -1,0 +1,19 @@
+# Board Service 설정
+server:
+  port: 8082  # Board Service의 전용 포트
+
+spring:
+  application:
+    name: board-service  # Eureka에 등록될 서비스 이름
+
+# MSA 핵심: 서비스 디스커버리 설정
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server 주소
+
+# 참고: Board Service는 Member Service와 다음과 같이 통신합니다:
+# 1. Eureka에서 member-service의 위치 정보 조회
+# 2. Feign Client를 통해 HTTP 요청 전송
+# 3. 로드밸런싱: member-service의 여러 인스턴스 중 자동 선택
+# 4. 서킷 브레이커: 대상 서비스 장애 시 빠른 실패 처리
