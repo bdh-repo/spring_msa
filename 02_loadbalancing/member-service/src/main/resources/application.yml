@@ -1,0 +1,25 @@
+# Member Service 설정
+server:
+  port: 8081  # Member Service의 전용 포트
+
+spring:
+  application:
+    name: member-service  # Eureka에 등록될 서비스 이름 (다른 서비스들이 이 이름으로 호출)
+
+# MSA 핵심: 서비스 디스커버리 설정
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server에 자신을 등록하고 다른 서비스 정보를 가져옴
+  instance:
+    # MSA 헬스체크: Spring Cloud가 자동으로 헬스체크 수행
+    lease-renewal-interval-in-seconds: 30    # 30초마다 Eureka에 생존 신호 전송 (헬스체크)
+    lease-expiration-duration-in-seconds: 90 # 90초 동안 신호 없으면 서비스 제거
+    # 참고: API Gateway나 다른 서비스가 이 서비스 호출 시,
+    #      Eureka가 헬스체크를 통해 살아있는 인스턴스만 라우팅 대상으로 제공
+
+# 참고: MSA에서 각 서비스는 다음과 같이 동작합니다:
+# 1. 서비스 시작 시 Eureka Server에 자신의 정보(IP, 포트, 상태) 등록
+# 2. 주기적으로 Eureka Server에 하트비트 전송으로 생존 신호
+# 3. 다른 서비스 호출 시 Eureka에서 대상 서비스의 위치 정보 조회
+# 4. 서비스 종료 시 Eureka Server에서 자동 제거

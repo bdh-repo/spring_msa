@@ -1,0 +1,6 @@
+//rootProject.name = 'tutorial'
+
+//include 'eureka-server'
+//include 'member-service'
+//include 'board-service'
+//include 'api-gateway'
